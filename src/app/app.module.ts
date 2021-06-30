@@ -1,3 +1,6 @@
+import { AdminAuthGuardService as AdminAuthGuard } from './services/admin-auth-guard.service';
+import { UserService } from './services/user.service';
+import { AuthGuardService as AuthGuard } from './services/auth-guard.service';
 import { LoginComponent } from './login/login.component';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
@@ -16,6 +19,9 @@ import { MyOrdersComponent } from './my-orders/my-orders.component';
 import { AdminProductsComponent } from './admin/admin-products/admin-products.component';
 import { AdminOrdersComponent } from './admin/admin-orders/admin-orders.component';
 import { RouterModule } from '@angular/router';
+import { AngularFireAuthModule } from '@angular/fire/auth';
+import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { AuthService } from './services/auth.service';
 @NgModule({
   declarations: [
     AppComponent,
@@ -34,18 +40,27 @@ import { RouterModule } from '@angular/router';
     RouterModule.forRoot([
       {path:'', component:HomeComponent},
       {path:'products', component:ProductsComponent},
-      {path:'shopping-cart', component:ShoppingCartComponent},
-      {path:'check-out', component:CheckOutComponent},
       {path:'login', component:LoginComponent},
-      {path:'my/orders', component:MyOrdersComponent},
-      {path:'order-success', component:OrderSuccessComponent},
-      {path:'admin/products', component:AdminProductsComponent},
-      {path:'admin/orders', component:AdminOrdersComponent},
-       {path:'admin/orders', component:AdminOrdersComponent}
+      {path:'shopping-cart', component:ShoppingCartComponent},
+      
+      {path:'check-out', component:CheckOutComponent, canActivate:[AuthGuard]},
+      {path:'my/orders', component:MyOrdersComponent ,canActivate:[AuthGuard]},
+      {path:'order-success', component:OrderSuccessComponent ,canActivate:[AuthGuard]},
+
+      {path:'admin/products', component:AdminProductsComponent ,canActivate:[AuthGuard, AdminAuthGuard] },
+      {path:'admin/orders', component:AdminOrdersComponent ,canActivate:[AuthGuard, AdminAuthGuard]},
+    
     ]),
     AngularFireModule.initializeApp(environment.firebase),
+    AngularFireAuthModule,
+    AngularFirestoreModule
   ],
-  providers: [],
+  providers: [
+    AuthService,
+    AuthGuard,
+    UserService,
+    AdminAuthGuard
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
