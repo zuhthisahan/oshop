@@ -1,3 +1,5 @@
+import { ProductService } from './services/product.service';
+import { CategoryService } from './services/category.service';
 import { AdminAuthGuardService as AdminAuthGuard } from './services/admin-auth-guard.service';
 import { UserService } from './services/user.service';
 import { AuthGuardService as AuthGuard } from './services/auth-guard.service';
@@ -22,6 +24,9 @@ import { RouterModule } from '@angular/router';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AuthService } from './services/auth.service';
+import { ProductFormComponent } from './admin/product-form/product-form.component';
+import { FormsModule } from '@angular/forms';
+import { CustomFormsModule } from 'ng2-validation';
 @NgModule({
   declarations: [
     AppComponent,
@@ -34,6 +39,7 @@ import { AuthService } from './services/auth.service';
     MyOrdersComponent,
     AdminProductsComponent,
     AdminOrdersComponent,
+    ProductFormComponent,
   ],
   imports: [
     BrowserModule,
@@ -46,20 +52,30 @@ import { AuthService } from './services/auth.service';
       {path:'check-out', component:CheckOutComponent, canActivate:[AuthGuard]},
       {path:'my/orders', component:MyOrdersComponent ,canActivate:[AuthGuard]},
       {path:'order-success', component:OrderSuccessComponent ,canActivate:[AuthGuard]},
-
+ 
+      // If products route not found with id, check with new else product
+      // Order is important [specific routes at top]
+      {path:'admin/products/:id', component:ProductFormComponent ,canActivate:[AuthGuard, AdminAuthGuard]},
+      {path:'admin/products/new', component:ProductFormComponent ,canActivate:[AuthGuard, AdminAuthGuard]},
       {path:'admin/products', component:AdminProductsComponent ,canActivate:[AuthGuard, AdminAuthGuard] },
       {path:'admin/orders', component:AdminOrdersComponent ,canActivate:[AuthGuard, AdminAuthGuard]},
+     
+    
     
     ]),
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireAuthModule,
-    AngularFirestoreModule
+    AngularFirestoreModule,
+    FormsModule,
+    CustomFormsModule
   ],
   providers: [
     AuthService,
     AuthGuard,
     UserService,
-    AdminAuthGuard
+    AdminAuthGuard,
+    CategoryService,
+    ProductService
   ],
   bootstrap: [AppComponent]
 })

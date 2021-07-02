@@ -8,10 +8,11 @@ import { AuthService } from '../services/auth.service';
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent  {
-appUser!: AppUSer;
+  // define appUSer 
+  appUser!: AppUSer;
+
   constructor(private auth: AuthService, private router:Router) {
     auth.appUSer$.subscribe(appUser => this.appUser=appUser)
-    console.log(this.appUser == undefined)
    }
 
   logout(){
