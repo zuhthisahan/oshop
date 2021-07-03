@@ -27,6 +27,8 @@ import { AuthService } from './services/auth.service';
 import { ProductFormComponent } from './admin/product-form/product-form.component';
 import { FormsModule } from '@angular/forms';
 import { CustomFormsModule } from 'ng2-validation';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AngularMaterialModule } from './angular-material.module';
 @NgModule({
   declarations: [
     AppComponent,
@@ -43,6 +45,7 @@ import { CustomFormsModule } from 'ng2-validation';
   ],
   imports: [
     BrowserModule,
+    AngularMaterialModule,
     RouterModule.forRoot([
       {path:'', component:HomeComponent},
       {path:'products', component:ProductsComponent},
@@ -67,7 +70,8 @@ import { CustomFormsModule } from 'ng2-validation';
     AngularFireAuthModule,
     AngularFirestoreModule,
     FormsModule,
-    CustomFormsModule
+    CustomFormsModule,
+    BrowserAnimationsModule
   ],
   providers: [
     AuthService,
@@ -75,7 +79,8 @@ import { CustomFormsModule } from 'ng2-validation';
     UserService,
     AdminAuthGuard,
     CategoryService,
-    ProductService
+    ProductService,
+    
   ],
   bootstrap: [AppComponent]
 })
