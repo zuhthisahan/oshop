@@ -13,8 +13,9 @@ import { take } from 'rxjs/operators';
 export class ProductFormComponent implements OnInit {
   categories$ !:  Observable<any>;
   product$ !:  Observable<any>;
-  product=  {} as any;
-  productId : any
+  product=  <any>[];
+  p1 =<Products><unknown>[];
+  productId : string|null
   
   constructor(
     private categoryService: CategoryService,
@@ -27,16 +28,10 @@ export class ProductFormComponent implements OnInit {
     this.categories$ = this.categoryService.getCategories().snapshotChanges();
 
     this.productId = this.route.snapshot.paramMap.get('id')
-    if(this.productId){
+    console.log("id"+this.productId)
+    if(this.productId && this.productId !="new"){
       this.product = this.productService.getById(this.productId).valueChanges().pipe(take(1)).subscribe((c:any) => this.product = c)
-      console.log(this.product)
-    }else{
-      this.product({
-        title: "enter",
-        price:0,
-        category:"ss",
-        imageUrl:"ss"
-      })
+      console.log("coming")
     }  
     
    
@@ -46,7 +41,7 @@ export class ProductFormComponent implements OnInit {
   }
 
   save(product:any){
-    if(this.productId) this.productService.update(this.productId, product)
+    if(this.productId && this.productId !="new") this.productService.update(this.productId, product)
     else this.productService.create(product)
  
     this.router.navigate(['/admin/products'])
@@ -54,7 +49,7 @@ export class ProductFormComponent implements OnInit {
 
   delete(){
     if(!confirm('Are you sure you want to delete this product?')) return;
-
+      if(!this.productId) return;
       this.productService.delete(this.productId);
       this.router.navigate(['/admin/products'])
   
