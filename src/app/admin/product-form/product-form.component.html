@@ -44,14 +44,7 @@
         </form>
     </div>
     <div class="col-md-6">
-        <div *ngIf="product.title" class="card" >
-            <img [src]="product.imageUrl" class="card-img-top" >
-            <div class="card-body">
-              <h3 class="card-title">{{product.title}}</h3>
-              <p class="card-text">{{product.price}}</p>
-              
-            </div>
-          </div>
+        <products-card [product]="product" [show-actions]="false" ></products-card>
     </div>
 </div>
 

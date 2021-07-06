@@ -1,3 +1,4 @@
+import { ProductsFilterComponent } from './products/products-filter/products-filter.component';
 import { ProductService } from './services/product.service';
 import { CategoryService } from './services/category.service';
 import { AdminAuthGuardService as AdminAuthGuard } from './services/admin-auth-guard.service';
@@ -29,6 +30,8 @@ import { FormsModule } from '@angular/forms';
 import { CustomFormsModule } from 'ng2-validation';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AngularMaterialModule } from './angular-material.module';
+import { ProductsCardComponent } from './products-card/products-card.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -42,12 +45,15 @@ import { AngularMaterialModule } from './angular-material.module';
     AdminProductsComponent,
     AdminOrdersComponent,
     ProductFormComponent,
+    ProductsFilterComponent,
+    ProductsCardComponent
+    
   ],
   imports: [
     BrowserModule,
     AngularMaterialModule,
     RouterModule.forRoot([
-      {path:'', component:HomeComponent},
+      {path:'', component:ProductsComponent},
       {path:'products', component:ProductsComponent},
       {path:'login', component:LoginComponent},
       {path:'shopping-cart', component:ShoppingCartComponent},

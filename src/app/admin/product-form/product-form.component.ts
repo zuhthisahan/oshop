@@ -23,10 +23,7 @@ export class ProductFormComponent implements OnInit {
     private router: Router,
     // Activate Route to read the url parameters
     private route:ActivatedRoute ) {
-
-    
-    this.categories$ = this.categoryService.getCategories().snapshotChanges();
-
+    this.categories$ = this.categoryService.getAll().snapshotChanges();
     this.productId = this.route.snapshot.paramMap.get('id')
     console.log("id"+this.productId)
     if(this.productId && this.productId !="new"){
