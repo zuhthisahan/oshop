@@ -1,3 +1,5 @@
+import { ShippingFormComponent } from './shipping-form/shipping-form.component';
+import { OrderService } from './services/order.service';
 import { ShoppingCartService } from './services/shopping-cart.service';
 import { ProductsFilterComponent } from './products/products-filter/products-filter.component';
 import { ProductService } from './services/product.service';
@@ -33,6 +35,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AngularMaterialModule } from './angular-material.module';
 import { ProductsCardComponent } from './products-card/products-card.component';
 import { ProductQuantityComponent } from './product-quantity/product-quantity.component';
+import { ShoppingCartSummaryComponent } from './shipping-cart-summary/shopping-cart-summary.component';
+
 
 @NgModule({
   declarations: [
@@ -49,7 +53,9 @@ import { ProductQuantityComponent } from './product-quantity/product-quantity.co
     ProductFormComponent,
     ProductsFilterComponent,
     ProductsCardComponent,
-    ProductQuantityComponent
+    ProductQuantityComponent,
+    ShoppingCartSummaryComponent,
+    ShippingFormComponent
     
   ],
   imports: [
@@ -63,7 +69,7 @@ import { ProductQuantityComponent } from './product-quantity/product-quantity.co
       
       {path:'check-out', component:CheckOutComponent, canActivate:[AuthGuard]},
       {path:'my/orders', component:MyOrdersComponent ,canActivate:[AuthGuard]},
-      {path:'order-success', component:OrderSuccessComponent ,canActivate:[AuthGuard]},
+      {path:'order-success/:id', component:OrderSuccessComponent ,canActivate:[AuthGuard]},
  
       // If products route not found with id, check with new else product
       // Order is important [specific routes at top]
@@ -89,7 +95,8 @@ import { ProductQuantityComponent } from './product-quantity/product-quantity.co
     AdminAuthGuard,
     CategoryService,
     ProductService,
-    ShoppingCartService
+    ShoppingCartService,
+    OrderService
     
   ],
   bootstrap: [AppComponent]

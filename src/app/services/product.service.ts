@@ -39,7 +39,6 @@ export class ProductService {
 
 
   delete(produtId:string){
-    console.log("Coming")
     return this.db.object('/products/'+ produtId).remove();
   }
 }
