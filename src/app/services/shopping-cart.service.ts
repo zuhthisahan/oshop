@@ -12,17 +12,34 @@ export class ShoppingCartService {
 
   constructor(private db: AngularFireDatabase) { }
 
+  async getCart(): Promise<Observable<ShoppingCart>>  {
+    let cartId= await this.getOrCreateCartId()
+    return this.db.object('/shopping-cart/' + cartId).valueChanges().pipe(
+      map((s:any)=> new ShoppingCart(s?.items))
+    );
+  }
+
+  //no need async
+  async addToCart(product:Products){
+    this.updateItem(product,1)
+   }
+
+ //no need async
+ async removeFromCart(product: Products) {
+    this.updateItem(product,-1)
+  }
+
+
+  async clearCart(){
+    let cartId = await this.getOrCreateCartId();
+    this.db.object('/shopping-cart/' + cartId + '/items').remove(); 
+  }
+
+   
   private create(){
     return this.db.list('/shopping-cart').push({
       dateCreated: new Date().getTime()
     })
-  }
-
-  async getCart(): Promise<Observable<ShoppingCart>>  {
-    let cartId= await this.getOrCreateCartId()
-    return this.db.object('/shopping-cart/' + cartId).valueChanges().pipe(
-      map((s:any)=> new ShoppingCart(s.items))
-    );
   }
 
   private async getOrCreateCartId(): Promise<string>{
@@ -38,22 +55,23 @@ export class ShoppingCartService {
   private getItem(cartId: string, productId?:string ){
     return this.db.object('/shopping-cart/' + cartId + '/items/' +productId )
   }
- 
-  addToCart(product:Products){
-   this.updateItemQuantity(product,1)
-  }
-
-   removeFromCart(product: Products) {
-    this.updateItemQuantity(product,-1)
-  }
   
-  private async updateItemQuantity(product: Products, change:number){
+  private async updateItem(product: Products, change:number){
     let cartId = await this.getOrCreateCartId(); // promise to observable
     let item$ = this.getItem(cartId, product.id)
     // item$.valueChanges().subscribe(i=> console.log(i))
     item$.valueChanges().pipe(take(1)).subscribe((item:any) => {
       // No need of if else statement
-        item$.update({product: product , quantity: (item?.quantity || 0) + change })
+      let quantity = (item?.quantity || 0) + change 
+      if(quantity === 0) item$.remove();
+      else item$.update({
+          //v1 : don;t add under the product
+          // product: product,
+          title:product.title,
+          imageUrl:product.imageUrl,
+          price:product.price,
+          quantity: quantity
+        });
     });
   }
   

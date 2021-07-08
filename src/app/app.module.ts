@@ -32,6 +32,7 @@ import { CustomFormsModule } from 'ng2-validation';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AngularMaterialModule } from './angular-material.module';
 import { ProductsCardComponent } from './products-card/products-card.component';
+import { ProductQuantityComponent } from './product-quantity/product-quantity.component';
 
 @NgModule({
   declarations: [
@@ -47,7 +48,8 @@ import { ProductsCardComponent } from './products-card/products-card.component';
     AdminOrdersComponent,
     ProductFormComponent,
     ProductsFilterComponent,
-    ProductsCardComponent
+    ProductsCardComponent,
+    ProductQuantityComponent
     
   ],
   imports: [
